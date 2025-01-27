@@ -1,13 +1,13 @@
 # MathFunElf - DeepSeek数学教育助手
 
-基于DeepSeek大语言模型的智能数学教育辅助系统，旨在为学生和教师提供全方位的数学学习支持。
+MathFunElf是一个基于DeepSeek大语言模型的智能数学教育助手，旨在帮助学生更好地理解和学习数学知识。
 
 ## 功能特点
 
-- **智能解题**：提供详细的数学问题解题步骤和思路
-- **概念讲解**：深入浅出地解释数学概念，包含定义、公式和示例
-- **作业批改**：自动批改学生作业并提供个性化反馈
-- **学习建议**：基于学生表现提供针对性的学习建议和资源推荐
+- 智能题目解析：详细分析数学题目的解题思路和步骤
+- 知识点讲解：针对性地解释相关数学概念和原理
+- 个性化辅导：根据学生的学习水平提供适合的练习题
+- 实时交互：支持自然语言对话式的学习辅导
 
 ## 技术架构
 
@@ -20,10 +20,18 @@
 - React + TypeScript：现代化的前端开发框架
 - Vite：下一代前端构建工具
 
+## 环境要求
+
+- Python 3.8+
+- Node.js 16+
+- npm 8+
+
 ## 安装部署
 
 1. 克隆项目并安装后端依赖：
 ```bash
+git clone <repository-url>
+cd MathFunElf
 pip install -r requirements.txt
 ```
 
@@ -44,32 +52,40 @@ npm install
 
 1. 启动后端服务：
 ```bash
-uvicorn app:app --reload
+python start.py
 ```
+后端服务将在 http://localhost:8000 运行
 
 2. 启动前端开发服务器：
 ```bash
 cd frontend
 npm run dev
 ```
+前端服务将在 http://localhost:5173 运行
 
 ## API接口
 
-### 1. 解答数学问题
-- 端点：`POST /solve-math`
-- 功能：提供详细的解题步骤
+### 数学问题解答
+- 端点：`/api/solve`
+- 方法：POST
+- 请求体：
+```json
+{
+    "question": "请解答这道数学题...",
+    "level": "high_school"
+}
+```
 
-### 2. 解释数学概念
-- 端点：`POST /explain-concept`
-- 功能：提供概念解释，支持基础/中级/高级详细程度
-
-### 3. 批改作业
-- 端点：`POST /grade-work`
-- 功能：自动评分并提供反馈
-
-### 4. 学习建议
-- 端点：`POST /learning-advice`
-- 功能：提供个性化学习建议
+### 知识点讲解
+- 端点：`/api/explain`
+- 方法：POST
+- 请求体：
+```json
+{
+    "topic": "三角函数",
+    "detail_level": "basic"
+}
+```
 
 ## 贡献指南
 
@@ -79,6 +95,13 @@ npm run dev
 2. 添加必要的测试用例
 3. 更新相关文档
 
+## 开发计划
+
+- [ ] 添加更多数学题型支持
+- [ ] 优化解题推理过程
+- [ ] 实现学习进度追踪
+- [ ] 支持多语言界面
+
 ## 许可证
 
-MIT License
+本项目采用 MIT 许可证
