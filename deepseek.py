@@ -126,9 +126,19 @@ class DeepSeekAPI:
         返回:
             Dict: 包含评分和详细反馈的字典
         """
+        prompt = (
+            "你是一个专业的数学教师，请对学生的数学作业进行评估和反馈。请按照以下格式提供分析：\n"
+            "1. 得分评估（总分100分）\n"
+            "2. 解题步骤分析\n"
+            "3. 错误分析（如果有）\n"
+            "4. 改进建议\n"
+            "5. 相关知识点\n\n"
+            f"题目：{question}\n"
+            f"学生答案：{answer}"
+        )
         payload = {
-            "prompt": f"请评估以下数学题的答案并提供详细反馈：\n题目：{question}\n学生答案：{answer}",
-            "max_tokens": 500
+            "prompt": prompt,
+            "max_tokens": 1000
         }
         return self._make_request("grade", payload)
 

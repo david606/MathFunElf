@@ -30,11 +30,25 @@ def setup_logging():
 def check_environment():
     logger.info('检查环境变量配置...')
     required_vars = ['DEEPSEEK_API_KEY', 'DEEPSEEK_API_URL']
-    missing_vars = [var for var in required_vars if not os.getenv(var)]
+    
+    # 检查环境变量是否存在且不为空
+    missing_vars = []
+    invalid_vars = []
+    for var in required_vars:
+        value = os.getenv(var)
+        if not value:
+            missing_vars.append(var)
+        elif not value.strip():  # 检查值是否为空字符串
+            invalid_vars.append(var)
     
     if missing_vars:
         logger.error(f'缺少必要的环境变量: {", ".join(missing_vars)}')
         return False
+    
+    if invalid_vars:
+        logger.error(f'以下环境变量的值无效: {", ".join(invalid_vars)}')
+        return False
+        
     logger.info('环境变量检查通过')
     return True
 
@@ -75,18 +89,40 @@ def start_frontend():
 
 # 监控进程输出
 def monitor_process(process, name):
-    while True:
-        output = process.stdout.readline()
-        if output:
-            logger.info(f'{name}: {output.strip()}')
-        error = process.stderr.readline()
-        if error:
-            logger.error(f'{name}: {error.strip()}')
-        
-        # 检查进程是否还在运行
-        if process.poll() is not None:
-            logger.error(f'{name}服务已停止，退出代码: {process.returncode}')
-            break
+    try:
+        while True:
+            # 使用非阻塞方式读取输出
+            output = process.stdout.readline() if process.stdout else ''
+            if output:
+                logger.info(f'{name}: {output.strip()}')
+            
+            error = process.stderr.readline() if process.stderr else ''
+            if error:
+                logger.error(f'{name}: {error.strip()}')
+            
+            # 检查进程是否还在运行
+            if process.poll() is not None:
+                exit_code = process.returncode
+                if exit_code != 0:
+                    logger.error(f'{name}服务异常退出，退出代码: {exit_code}')
+                else:
+                    logger.info(f'{name}服务正常退出，退出代码: {exit_code}')
+                break
+            
+            # 避免CPU过度使用
+            time.sleep(0.1)
+    except Exception as e:
+        logger.error(f'{name}服务监控发生错误: {str(e)}')
+        # 确保进程被终止
+        try:
+            process.terminate()
+            process.wait(timeout=5)  # 等待进程结束
+        except Exception as term_error:
+            logger.error(f'终止{name}服务时发生错误: {str(term_error)}')
+            try:
+                process.kill()  # 如果终止失败，强制结束进程
+            except Exception as kill_error:
+                logger.error(f'强制结束{name}服务时发生错误: {str(kill_error)}')
 
 # 主函数
 def main():

@@ -97,10 +97,32 @@ async def explain_math_concept(concept: MathConcept):
 
 @app.post("/grade-work")
 async def grade_student_work(work: StudentWork):
-    """自动批改学生作业并提供反馈"""
+    """自动批改学生作业并提供反馈
+    
+    接收学生的作业答案，使用DeepSeek API进行智能评分和分析，
+    返回包含得分、解题步骤分析、错误分析和改进建议的详细反馈。
+    
+    参数:
+        work: StudentWork对象，包含题目内容和学生答案
+        
+    返回:
+        包含评分和详细反馈信息的JSON响应
+        
+    异常:
+        HTTPException: 当API调用失败时抛出，状态码500
+    """
     try:
         result = deepseek_client.grade_student_work(work.question, work.answer)
-        return {"status": "success", "grade": result.get("grade"), "feedback": result.get("feedback")}
+        # 解析API返回的内容
+        content = result.get("content", "")
+        # 返回完整的评估结果
+        return {
+            "status": "success",
+            "result": {
+                "raw_feedback": content,  # 原始反馈内容
+                "student_id": work.student_id  # 如果提供了学生ID，一并返回
+            }
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
