@@ -1,0 +1,32 @@
+{
+  "name": "mathfunelf",
+  "version": "1.0.0",
+  "description": "智能数学学习与教学辅助平台",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "backend": "cd backend && uvicorn main:app --reload",
+    "install-all": "npm install && cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
+    "start": "concurrently \"npm run dev\" \"npm run backend\""
+  },
+  "keywords": [
+    "math",
+    "education",
+    "AI",
+    "learning"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^4.0.3"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.6.0",
+    "@types/echarts": "^4.9.22",
+    "@types/node": "^22.13.1",
+    "antd": "^5.23.3",
+    "echarts": "^5.6.0"
+  }
+}

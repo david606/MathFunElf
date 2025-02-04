@@ -1,50 +1,79 @@
-# React + TypeScript + Vite
+# 数学精灵前端设计文档
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 布局设计
 
-Currently, two official plugins are available:
+### 整体布局结构
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **布局类型**：采用左侧固定导航 + 右侧内容区的经典布局
+- **响应式设计**：最小宽度支持到1024px
 
-## Expanding the ESLint configuration
+### 导航栏设计
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **宽度**：固定200px
+- **位置**：固定在左侧（fixed定位）
+- **阴影效果**：使用柔和的阴影（box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06)）
+- **Logo区域**：
+  - 高度：64px
+  - 底部边框：1px solid #f0f0f0
+  - Logo文字：使用蓝色(#1890ff)，20px字号
 
-- Configure the top-level `parserOptions` property like this:
+### 内容区设计
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **左边距**：200px（与导航栏宽度对应）
+- **内边距**：32px
+- **背景色**：浅灰色(#f5f7fa)
+- **内容容器**：
+  - 白色背景
+  - 圆角：8px
+  - 阴影：0 1px 3px rgba(0, 0, 0, 0.1)
+  - 内边距：32px
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 导航菜单设计
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### 菜单项样式
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- **内边距**：上下8px，左右12px
+- **圆角**：8px
+- **高度**：48px
+- **图标间距**：右侧8px
+
+### 交互效果
+
+- **悬停效果**：
+  - 轻微放大（scale(1.02)）
+  - 背景色变更为浅蓝(#f0f5ff)
+- **选中状态**：
+  - 背景色：#e6f7ff
+  - 无右侧边框
+  - 保持圆角效果
+
+## 主题配色
+
+- **主色**：蓝色(#1890ff)
+- **背景色**：
+  - 主背景：白色(#fff)
+  - 次背景：浅灰(#f5f7fa)
+- **边框色**：#f0f0f0
+- **文字颜色**：
+  - 主标题：蓝色(#1890ff)
+  - 正文：默认黑色
+
+## 动画效果
+
+### 过渡动画
+
+- **菜单项**：所有属性0.3s ease过渡
+- **布局切换**：0.3s ease过渡
+
+## 响应式设计
+
+- 保持最小宽度1024px，确保导航栏和内容区域的基本布局不被破坏
+- 导航栏固定宽度200px，始终可见
+- 内容区域自适应剩余宽度
+
+## 用户体验优化
+
+- 使用柔和的阴影和圆角，创造现代简洁的视觉效果
+- 菜单项的悬停和选中状态有明显区分，提供清晰的视觉反馈
+- 所有交互都添加平滑过渡动画，提升操作流畅度
+- 统一的内边距和间距设计，保持界面整体的节奏感
