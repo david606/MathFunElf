@@ -1,11 +1,20 @@
 import React from 'react';
 import { Layout, Menu } from 'antd';
 import { BookOutlined, BulbOutlined, CheckSquareOutlined, NodeIndexOutlined } from '@ant-design/icons';
+import { useNavigate, useLocation, Routes, Route } from 'react-router-dom';
+import ProblemAnalysis from '../ProblemAnalysis';
 import './MainLayout.css';
 
 const { Header, Sider, Content } = Layout;
 
 const MainLayout: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleMenuClick = (key: string) => {
+    navigate(`/${key}`);
+  };
+
   const menuItems = [
     {
       key: 'problem',
@@ -37,16 +46,22 @@ const MainLayout: React.FC = () => {
         </div>
         <Menu
           mode="inline"
-          defaultSelectedKeys={['problem']}
+          selectedKeys={[location.pathname.substring(1) || 'problem']}
           items={menuItems}
           className="main-menu"
+          onClick={({ key }) => handleMenuClick(key as string)}
         />
       </Sider>
       <Layout className="site-layout">
         <Content className="main-content">
           <div className="content-container">
-            <h2>欢迎使用数学精灵！</h2>
-            <p>请从左侧选择功能开始使用</p>
+            <Routes>
+              <Route path="/" element={<ProblemAnalysis />} />
+              <Route path="/problem" element={<ProblemAnalysis />} />
+              <Route path="/concept" element={<div>概念解析功能开发中...</div>} />
+              <Route path="/homework" element={<div>批改作业功能开发中...</div>} />
+              <Route path="/learning" element={<div>学习图谱功能开发中...</div>} />
+            </Routes>
           </div>
         </Content>
       </Layout>
